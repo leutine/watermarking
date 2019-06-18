@@ -3,7 +3,14 @@ import numpy as np
 from PIL import Image
 
 
-def image_to_data(path='img\\orig\\lena.jpg'):
+def crop_to_data(cropped_image):
+    width, height = cropped_image.size
+    data = list(cropped_image.getdata())
+    data = lib.format_to_2d(data, width)
+    return data
+
+
+def image_to_data(path='img\\test\\lena.png'):
     # convert image to 8-bit grayscale
     img = Image.open(path).convert('L')
 
@@ -23,22 +30,10 @@ def image_to_data(path='img\\orig\\lena.jpg'):
     return data
 
 
-def split_data(data, size=8):
-    # Not working! #
-    # num = int((data.size / size ** 2))
-    # nr = data.shape[0]  # number of rows
-    # nc = data.shape[1]  # number of columns
-    # sub_arrays = np.zeros((num, size, size), dtype=np.int_)
-    # L1 = data[:size, :size]
-    # L2 = data[:size, size:nc]
-    # L3 = data[size:nr, :size]
-    # L4 = data[size:nr, size:nc]
-    # sub_arrays[0] = L1
-    # for i in sub_arrays:
-    #     sub_arrays[i]
+def crop(image, size=192):
+    cropped_name = image.split(".")[0] + ".png"
+    img = Image.open(image).convert('L')
+    w, h = img.size
+    cropped = img.crop((0, 0, size, size))
+    return cropped.save(cropped_name, "PNG")
 
-    # Working method #
-    crop = [data[x:x + size, y:y + size] for x in range(0, data.shape[0], size) for y in range(0, data.shape[1], size)]
-    crop = np.array(crop)
-
-    return crop

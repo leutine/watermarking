@@ -1,27 +1,7 @@
-import random
 import numpy as np
 
 
-def random_grayscale_data(size=16):
-    data = [[random.randint(0, 255) for i in range(size)] for j in range(size)]
-    data = np.array(data)
-    return data
-
-
-def random_watermark_data(size=4):
-    data = [[random.randint(0, 1) for i in range(size)] for j in range(size)]
-    data = np.array(data)
-    return data
-
-
 def format_to_1d(data):
-    # for element in data:
-    #     if type(element) in (tuple, list):
-    #         for item in format_to_1d(element):
-    #             yield item
-    #     else:
-    #         yield element
-
     return np.array(data).flatten()
 
 
@@ -31,3 +11,20 @@ def format_to_2d(data, col=8):
 
     return np.array(data).reshape((-1, col))
 
+
+def get_image_names_from(image):
+    image_orig = "%s.png" % image
+    image_wm = "%s_wm.png" % image
+    image_ext = "%s_wm_ext.png" % image
+    return [image_orig, image_wm, image_ext]
+
+
+def write_stats(image, *stats):
+    filename = "stats\\" + image.split("\\")[-1] + ".txt"
+    file = open(filename, "w+")
+
+    file.write(image + "\n")
+    for stat in stats:
+        file.write(stat + "\n")
+
+    file.close()
